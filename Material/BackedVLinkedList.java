@@ -9,7 +9,7 @@ public class BackedVLinkedList<P> implements VersionList<P> {
     private static class NodeRecord {
         public long timestamp;
         public String payload;
-        public String nextKey;
+        public String nextK;
 
         public NodeRecord() {}  // needed by Jackson
     }
@@ -31,7 +31,7 @@ public class BackedVLinkedList<P> implements VersionList<P> {
             NodeRecord record = new NodeRecord();
             record.timestamp = timestamp;
             record.payload = serializer.serialize(p);
-            record.nextKey = headKey;
+            record.nextK = headKey;
 
             String key = Long.toString(timestamp);
             String json = mapper.writeValueAsString(record);
@@ -59,7 +59,7 @@ public class BackedVLinkedList<P> implements VersionList<P> {
                     return serializer.deSerialize(record.payload);
                 }
 
-                currentKey = record.nextKey;
+                currentKey = record.nextK;
             }
 
             return null;

@@ -41,7 +41,7 @@ Persistent version list stored in a **KVStore**:
 - Each node keeps:
   - timestamp  
   - payload  
-  - nextKey  
+  - nextK  
 
 ---
 
@@ -66,8 +66,8 @@ Persistent version of FrugalSkiplist:
   - timestamp  
   - payload  
   - level  
-  - nextKey  
-  - vRidgyKey  
+  - nextK  
+  - vSkip  
 
 ---
 

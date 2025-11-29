@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * BackedFrugalSkiplist<P>
  * Implements VersionList<P> with skip pointers stored in KVStore.
- * Extended for VWeaver by adding kRidgyKey.
+ * Extended for VWeaver by adding kSkip.
  *
  * Used in:
  * - Task 1.2: Frugal Skiplist
@@ -20,9 +20,9 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
         public long timestamp;
         public int level;
         public String payload;
-        public String nextKey;
-        public String vRidgyKey;
-        public String kRidgyKey;
+        public String nextK;
+        public String vSkip;
+        public String kSkip;
 
         public NodeRecord() {}
     }
@@ -82,9 +82,9 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             rec.timestamp = timestamp;
             rec.level = lvl;
             rec.payload = serializer.serialize(p);
-            rec.nextKey = oldHeadKey;
-            rec.vRidgyKey = null;
-            rec.kRidgyKey = null;
+            rec.nextK = oldHeadKey;
+            rec.vSkip = null;
+            rec.kSkip = null;
 
             // Set vRidgy pointer
             String cursor = oldHeadKey;
@@ -92,10 +92,10 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
                 NodeRecord c = load(cursor);
                 if (c == null) break;
                 if (c.level > lvl) {
-                    rec.vRidgyKey = cursor;
+                    rec.vSkip = cursor;
                     break;
                 }
-                cursor = c.nextKey;
+                cursor = c.nextK;
             }
 
             // Persist node
@@ -113,7 +113,7 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
     // ----------------APPEND AND RETURN KEY---------------------
     // ----------------Required to set kRidgy in BackedVWeaverMVM------------------
 
-    public String appendAndReturnKey(P p, long timestamp) {
+    public String appendGetKey(P p, long timestamp) {
         try {
             int lvl = randomLevel();
             String oldHeadKey = headKey;
@@ -122,19 +122,19 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             rec.timestamp = timestamp;
             rec.level = lvl;
             rec.payload = serializer.serialize(p);
-            rec.nextKey = oldHeadKey;
-            rec.vRidgyKey = null;
-            rec.kRidgyKey = null;
+            rec.nextK = oldHeadKey;
+            rec.vSkip = null;
+            rec.kSkip = null;
 
             String cursor = oldHeadKey;
             while (cursor != null) {
                 NodeRecord c = load(cursor);
                 if (c == null) break;
                 if (c.level > lvl) {
-                    rec.vRidgyKey = cursor;
+                    rec.vSkip = cursor;
                     break;
                 }
-                cursor = c.nextKey;
+                cursor = c.nextK;
             }
 
             String key = Long.toString(timestamp);
@@ -144,7 +144,7 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             return key;
 
         } catch (Exception e) {
-            throw new RuntimeException("appendAndReturnKey failed", e);
+            throw new RuntimeException("appendGetKey failed", e);
         }
     }
 
@@ -166,16 +166,16 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
                 }
 
                 // try vRidgy pointer
-                if (cur.vRidgyKey != null) {
-                    NodeRecord skip = load(cur.vRidgyKey);
+                if (cur.vSkip != null) {
+                    NodeRecord skip = load(cur.vSkip);
                     if (skip != null && skip.timestamp >= timestamp) {
-                        curKey = cur.vRidgyKey;
+                        curKey = cur.vSkip;
                         continue;
                     }
                 }
 
                 // follow normal next pointer
-                curKey = cur.nextKey;
+                curKey = cur.nextK;
             }
 
             return null;
@@ -189,7 +189,7 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
 
     //---------------FIND VISIBLE NODE RECORD----------------
 
-    public NodeRecord findVisibleNodeRecord(long timestamp) {
+    public NodeRecord FindVisibleNodeRecord(long timestamp) {
         try {
             String curKey = headKey;
 
@@ -202,16 +202,16 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
                     return cur;
 
                 // try vRidgy pointer
-                if (cur.vRidgyKey != null) {
-                    NodeRecord skip = load(cur.vRidgyKey);
+                if (cur.vSkip != null) {
+                    NodeRecord skip = load(cur.vSkip);
                     if (skip != null && skip.timestamp >= timestamp) {
-                        curKey = cur.vRidgyKey;
+                        curKey = cur.vSkip;
                         continue;
                     }
                 }
 
                 // else step normally
-                curKey = cur.nextKey;
+                curKey = cur.nextK;
             }
 
             return null;
@@ -221,7 +221,7 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
         }
     }
     // -------------- public save wrapper (needed by VWeaver) --------------
-    public void saveNode(String key, NodeRecord rec) {
+    public void storeNode(String key, NodeRecord rec) {
         try {
             save(key, rec);
         } catch (Exception e) {

@@ -174,14 +174,14 @@ public class Test {
         System.out.println("\n\n VWEAVER BENCHMARKING \n");
 
         long[] tsArray = {10, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000};
-        int RUNS_VW = 5;
+        int RunsVW = 5;
 
         VersionListFactory<Payload> weaverFactory =
                 (store, ser) -> new BackedFrugalSkiplist<>(store, ser);
 
         long totalWeaverInsert = 0;
 
-        for (int r = 0; r < RUNS_VW; r++) {
+        for (int r = 0; r < RunsVW; r++) {
             KVStore sW = new InMemoryKVStore();
             BackedVWeaverMVM<String, Payload> mvmVW =
                     new BackedVWeaverMVM<>(weaverFactory, sW, serializer);
@@ -194,7 +194,7 @@ public class Test {
             totalWeaverInsert += (tEnd - tStart);
         }
 
-        long avgWeaverInsert = totalWeaverInsert / RUNS_VW;
+        long avgWeaverInsert = totalWeaverInsert / RunsVW;
 
         System.out.println("Average Insertion Times (ns):");
         System.out.println("VLinkedList       : " + avgInsertLinked);
@@ -214,14 +214,14 @@ public class Test {
         for (long ts : tsArray) {
             long totalVW = 0;
 
-            for (int r = 0; r < RUNS_VW; r++) {
+            for (int r = 0; r < RunsVW; r++) {
                 long a = System.nanoTime();
                 mvmVW.snapshot(ts).hasNext();
                 long b = System.nanoTime();
                 totalVW += (b - a);
             }
 
-            long avgVW = totalVW / RUNS_VW;
+            long avgVW = totalVW / RunsVW;
 
             System.out.println("Timestamp " + ts + ":");
             System.out.println("  VWeaver avg      = " + avgVW);

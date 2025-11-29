@@ -35,27 +35,27 @@ public class BackedVWeaverMVM<K extends Comparable<K>, P>
 
         long ts = versionCounter++;
 
-        String thisNodeKey = list.appendAndReturnKey(payload, ts);
+        String thisNodeKey = list.appendGetKey(payload, ts);
 
-        K nextKey = map.higherKey(key);
-        if (nextKey == null)
+        K nextK = map.higherKey(key);
+        if (nextK == null)
             return ts;
 
-        BackedFrugalSkiplist<P> nextList = map.get(nextKey);
+        BackedFrugalSkiplist<P> nextList = map.get(nextK);
 
         BackedFrugalSkiplist.NodeRecord candidate =
-                nextList.findVisibleNodeRecord(ts);
+                nextList.FindVisibleNodeRecord(ts);
 
         BackedFrugalSkiplist.NodeRecord thisNode =
-                list.findVisibleNodeRecord(ts);
+                list.FindVisibleNodeRecord(ts);
 
         if (thisNode != null) {
             if (candidate != null)
-                thisNode.kRidgyKey = Long.toString(candidate.timestamp);
+                thisNode.kSkip = Long.toString(candidate.timestamp);
             else
-                thisNode.kRidgyKey = null;
+                thisNode.kSkip = null;
 
-            list.saveNode(thisNodeKey, thisNode);
+            list.storeNode(thisNodeKey, thisNode);
         }
 
         return ts;
@@ -106,7 +106,7 @@ public class BackedVWeaverMVM<K extends Comparable<K>, P>
             return result.iterator();
 
         BackedFrugalSkiplist.NodeRecord currentNode =
-                currentList.findVisibleNodeRecord(timestamp);
+                currentList.FindVisibleNodeRecord(timestamp);
 
         if (currentNode != null)
             result.add(new SimpleEntry<>(currentKey,
@@ -114,31 +114,31 @@ public class BackedVWeaverMVM<K extends Comparable<K>, P>
         else
             result.add(new SimpleEntry<>(currentKey, null));
 
-        K nextKey = map.higherKey(currentKey);
+        K nextK = map.higherKey(currentKey);
 
-        while (nextKey != null && nextKey.compareTo(end) <= 0) {
+        while (nextK != null && nextK.compareTo(end) <= 0) {
 
-            BackedFrugalSkiplist<P> nextList = map.get(nextKey);
+            BackedFrugalSkiplist<P> nextList = map.get(nextK);
 
             BackedFrugalSkiplist.NodeRecord nextNode = null;
 
-            if (currentNode != null && currentNode.kRidgyKey != null) {
-                long jump = Long.parseLong(currentNode.kRidgyKey);
-                nextNode = nextList.findVisibleNodeRecord(jump);
+            if (currentNode != null && currentNode.kSkip != null) {
+                long jump = Long.parseLong(currentNode.kSkip);
+                nextNode = nextList.FindVisibleNodeRecord(jump);
             }
 
             if (nextNode == null)
-                nextNode = nextList.findVisibleNodeRecord(timestamp);
+                nextNode = nextList.FindVisibleNodeRecord(timestamp);
 
             if (nextNode != null)
-                result.add(new SimpleEntry<>(nextKey,
+                result.add(new SimpleEntry<>(nextK,
                         nextList.getSerializer().deSerialize(nextNode.payload)));
             else
-                result.add(new SimpleEntry<>(nextKey, null));
+                result.add(new SimpleEntry<>(nextK, null));
 
             currentNode = nextNode;
-            currentKey = nextKey;
-            nextKey = map.higherKey(currentKey);
+            currentKey = nextK;
+            nextK = map.higherKey(currentKey);
         }
 
         return result.iterator();
@@ -154,7 +154,7 @@ public class BackedVWeaverMVM<K extends Comparable<K>, P>
         for (K key : map.keySet()) {
             BackedFrugalSkiplist<P> list = map.get(key);
             BackedFrugalSkiplist.NodeRecord node =
-                    list.findVisibleNodeRecord(timestamp);
+                    list.FindVisibleNodeRecord(timestamp);
 
             if (node != null)
                 out.add(new SimpleEntry<>(key,
