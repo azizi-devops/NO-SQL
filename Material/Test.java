@@ -165,11 +165,70 @@ public class Test {
             }
 
             System.out.println("Timestamp " + ts + ":");
-            System.out.println("  VLinkedList    avg = " + (totalSnapLinked / RUNS));
-            System.out.println("  FrugalSkiplist avg = " + (totalSnapSkip / RUNS));
+            System.out.println("VLinkedList    avg = " + (totalSnapLinked / RUNS));
+            System.out.println("FrugalSkiplist avg = " + (totalSnapSkip / RUNS));
         }
 
         System.out.println("\n Benchmark Completed ");
+
+        System.out.println("\n\n VWEAVER BENCHMARKING \n");
+
+        long[] tsArray = {10, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000};
+        int RUNS_VW = 5;
+
+        VersionListFactory<Payload> weaverFactory =
+                (store, ser) -> new BackedFrugalSkiplist<>(store, ser);
+
+        long totalWeaverInsert = 0;
+
+        for (int r = 0; r < RUNS_VW; r++) {
+            KVStore sW = new InMemoryKVStore();
+            BackedVWeaverMVM<String, Payload> mvmVW =
+                    new BackedVWeaverMVM<>(weaverFactory, sW, serializer);
+
+            long tStart = System.nanoTime();
+            for (var e : benchData) {
+                mvmVW.append(e.getKey(), e.getValue());
+            }
+            long tEnd = System.nanoTime();
+            totalWeaverInsert += (tEnd - tStart);
+        }
+
+        long avgWeaverInsert = totalWeaverInsert / RUNS_VW;
+
+        System.out.println("Average Insertion Times (ns):");
+        System.out.println("VLinkedList       : " + avgInsertLinked);
+        System.out.println("FrugalSkiplist    : " + avgInsertSkip);
+        System.out.println("VWeaver           : " + avgWeaverInsert);
+
+        System.out.println("\nVWeaver Snapshot Benchmark:\n");
+
+        KVStore sW = new InMemoryKVStore();
+        BackedVWeaverMVM<String, Payload> mvmVW =
+                new BackedVWeaverMVM<>(weaverFactory, sW, serializer);
+
+        for (var e : benchData) {
+            mvmVW.append(e.getKey(), e.getValue());
+        }
+
+        for (long ts : tsArray) {
+            long totalVW = 0;
+
+            for (int r = 0; r < RUNS_VW; r++) {
+                long a = System.nanoTime();
+                mvmVW.snapshot(ts).hasNext();
+                long b = System.nanoTime();
+                totalVW += (b - a);
+            }
+
+            long avgVW = totalVW / RUNS_VW;
+
+            System.out.println("Timestamp " + ts + ":");
+            System.out.println("  VWeaver avg      = " + avgVW);
+        }
+
+        System.out.println("\n VWeaver Benchmark Completed.\n");
+
 
     }
 

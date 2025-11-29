@@ -17,12 +17,12 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
     //-------------------NODE RECORD (STORED IN KVSTORE) ---------------------
 
     static class NodeRecord {
-        public long timestamp;    // version / timestamp
-        public int level;         // skiplist level
-        public String payload;    // serialized payload
-        public String nextKey;    // pointer to next (older) node
-        public String vRidgyKey;  // pointer within same skiplist (Task 1.2)
-        public String kRidgyKey;  // NEW: pointer to next key’s version list (Task 1.4)
+        public long timestamp;
+        public int level;
+        public String payload;
+        public String nextKey;
+        public String vRidgyKey;
+        public String kRidgyKey;
 
         public NodeRecord() {}
     }
@@ -78,16 +78,15 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             int lvl = randomLevel();
             String oldHeadKey = headKey;
 
-            // Create node
             NodeRecord rec = new NodeRecord();
             rec.timestamp = timestamp;
             rec.level = lvl;
             rec.payload = serializer.serialize(p);
             rec.nextKey = oldHeadKey;
             rec.vRidgyKey = null;
-            rec.kRidgyKey = null;   // must exist even if unused in Task 1.2
+            rec.kRidgyKey = null;
 
-            // Set vRidgy pointer (skip pointer inside same list)
+            // Set vRidgy pointer
             String cursor = oldHeadKey;
             while (cursor != null) {
                 NodeRecord c = load(cursor);
@@ -127,7 +126,6 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             rec.vRidgyKey = null;
             rec.kRidgyKey = null;
 
-            // Set vRidgy pointer
             String cursor = oldHeadKey;
             while (cursor != null) {
                 NodeRecord c = load(cursor);
@@ -139,7 +137,6 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
                 cursor = c.nextKey;
             }
 
-            // Save new node
             String key = Long.toString(timestamp);
             save(key, rec);
             headKey = key;
@@ -220,7 +217,7 @@ public class BackedFrugalSkiplist<P> implements VersionList<P> {
             return null;
 
         } catch (Exception e) {
-            throw new RuntimeException("findVisibleNodeRecord failed", e);
+            throw new RuntimeException("Failed to FindVisibleNodeRecord ", e);
         }
     }
     // -------------- public save wrapper (needed by VWeaver) --------------
