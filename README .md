@@ -190,7 +190,7 @@ Uses a VersionListFactory<P> to create appropriate version lists:_
     
 ## 📌 1.3(b) – Test Class Completion
 We completed the provided Test.java as required.
-*     ✔ Steps Implemented
+✔ Steps Implemented
 *     Read the dataset test_data.csv using the provided readData() method.
 *     Insert all entries into two MultiVersionMaps:
 *     one using BackedVLinkedList
@@ -220,9 +220,9 @@ We measured:
 
 1. Insertion Time
     Average measured over 2 runs:
-                VersionList Type	    Avg Insertion Time
-                 BackedVLinkedList	    ~0.39 s
-                 BackedFrugalSkiplist	~4.86 s
+                VersionList Type	       Avg Insertion Time
+                 BackedVLinkedList	        ~0.39 s
+                 BackedFrugalSkiplist	    ~4.86 s
     
 Explanation:
     Linked list append is O(1) → faster.
@@ -248,6 +248,74 @@ Results (typical averages):
     Linked List snapshot is O(n) → slow
     Frugal Skiplist snapshot is O(log n) → much faster
     At very high timestamps, early termination leads to smaller times for both
+
 ---
 
+## 📌 1.4 – VWeaver MultiVersionMap (Optimized Range Snapshot)
+In this task, we extend our MultiVersionMap implementation by adopting the VWeaver technique, 
+which accelerates range-based time travel queries by adding a cross-key skip pointer called kRidgy.
+This is the most advanced part of the project and demonstrates how multi-versioned data structures can be optimized across multiple keys.
 
+## 📌 1.4(a) – Implementation of BackedVWeaverMVM<K,P>
+We implemented the class:
+BackedVWeaverMVM<K extends Comparable<K>, P>
+which also implements MultiVersionMap<K,P>.
+
+✔ Internal Structure
+1. Uses a sorted TreeMap<K, BackedFrugalSkiplist<P>>
+2. Uses BackedFrugalSkiplist nodes extended with:
+3. kRidgyKey → cross-pointer to next key’s skiplist
+4. vRidgyKey → vertical skip pointer (from Task 1.2)
+5. Tracks a global timestamp counter (same as Task 1.3)
+
+✔ The New Addition: kRidgy Pointer
+
+1. Whenever we append a new version for key K:
+2. We insert normally into the skiplist (same as Task 1.2).
+3. We fetch the next higher key: nextKey = map.higherKey(K)
+4. We compute the visible version of nextKey at the same timestamp.
+5. We store the pointer to that node inside the new node’s kRidgyKey field.
+6. This gives us a shortcut into the next skiplist.
+
+## 📌 1.4(a) – Implementation of BackedVWeaverMVM<K,P>
+
+We implemented the class:
+BackedVWeaverMVM<K extends Comparable<K>, P>
+which also implements MultiVersionMap<K,P>.
+
+✔ Internal Structure
+1. Uses a sorted TreeMap<K, BackedFrugalSkiplist<P>>
+2. Uses BackedFrugalSkiplist nodes extended with:
+3. kRidgyKey → cross-pointer to next key’s skiplist
+4. vRidgyKey → vertical skip pointer (from Task 1.2)
+5. Tracks a global timestamp counter (same as Task 1.3)
+
+✔ The New Addition: kRidgy Pointer
+1. Whenever we append a new version for key K:
+2. We insert normally into the skiplist (same as Task 1.2).
+3. We fetch the next higher key: nextKey = map.higherKey(K)
+4. We compute the visible version of nextKey at the same timestamp.
+5. We store the pointer to that node inside the new node’s kRidgyKey field.
+6. This gives us a shortcut into the next skiplist.
+7. 
+
+
+## 📌 1.4(c) – Theoretical Improvement for Range-Snapshot Using Parent Pointers
+
+Theoretical Improvement
+If we had access to the internal nodes of the search tree, and each node stored a pointer to its parent,
+then we could compute the next key in sorted order (the in-order successor) without performing a search.
+
+The successor of a node in a binary search tree can be found using only pointer navigation:
+    Case 1 — Node has a right child
+        Move to the leftmost node in the right subtree.
+    Case 2 — Node has no right child
+        Repetitively follow the parent pointer upward until the node is a left child of its parent.
+        That parent is the next key.
+
+This computation touches only a few pointers and therefore works in O(1) amortized time, not O(log N).
+
+✔ Why this speeds up Range-Snapshot
+The VWeaver algorithm already reduces skiplist traversal cost using kRidgy and vRidgy pointers, 
+but moving from key to key is still expensive.
+Replacing higherKey() with an O(1) successor computation would make the horizontal traversal across keys effectively free.
