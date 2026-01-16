@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="049d5089-b056-4dee-b1c9-7f1e5359b320" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="37qyCGfLNgazYjMEL34Vo4rSLfB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GBifDebug (1).executor": "Run",
+    "Application.GBifDebug.executor": "Run",
+    "Application.GBifPreProcessing.executor": "Run",
+    "Application.HelloMongoDB.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/hani/Desktop/UNI/win2025-26/No SQL/Project/Project-2/Project2CodeTemplate/target/classes/project2",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  },
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\target\classes\project2" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\resources\project2" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\java" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\target\classes" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\java\project2" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\target\classes\project2" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\resources\project2" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\resources\communities" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\resources\project2\communities" />
+      <recent name="C:\Users\hani\Desktop\UNI\win2025-26\No SQL\Project\Project-2\Project2CodeTemplate\src\main\java\project2" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="project2" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.GBifPreProcessing">
+    <configuration name="GBifDebug (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.GBifDebug" />
+      <module name="Project2CodeTemplate" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GBifDebug" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.GBifDebug" />
+      <module name="Project2CodeTemplate" />
+      <option name="VM_PARAMETERS" value="-Xms1g -Xmx4g " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GBifDebug" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.GBifDebug" />
+      <module name="Project2CodeTemplate" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GBifPreProcessing" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.GBifPreProcessing" />
+      <module name="Project2CodeTemplate" />
+      <option name="VM_PARAMETERS" value="-Xms1g -Xmx4g " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HelloMongoDB" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.HelloMongoDB" />
+      <module name="Project2CodeTemplate" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.GBifDebug" />
+      <item itemvalue="Application.GBifDebug (1)" />
+      <item itemvalue="Application.GBifPreProcessing" />
+      <item itemvalue="Application.HelloMongoDB" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GBifPreProcessing" />
+        <item itemvalue="Application.GBifDebug" />
+        <item itemvalue="Application.GBifDebug (1)" />
+        <item itemvalue="Application.HelloMongoDB" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="049d5089-b056-4dee-b1c9-7f1e5359b320" name="Changes" comment="" />
+      <created>1767644766839</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767644766839</updated>
+    </task>
+    <servers />
+  </component>
+</project>
